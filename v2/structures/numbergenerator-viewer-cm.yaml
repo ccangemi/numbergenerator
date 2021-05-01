@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: numbergenerator-viewer-cm
+  namespace: numbergenerator
+  labels:
+    app: numbergenerator
+data:
+  application.yml: |-
+    server:
+      port: 8080
+    numberGenerator:
+      rest:
+        endpoint: "http://numbergenerator-platform-service:8080/random"
+    spring:
+      kafka:
+        consumer:
+            bootstrap-servers: kafka-cluster-kafka-bootstrap:9092
+            group-id: number-consumer
+            auto-offset-reset: earliest
+            #key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.apache.kafka.common.serialization.LongDeserializer

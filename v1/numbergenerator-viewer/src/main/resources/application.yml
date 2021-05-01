@@ -1,0 +1,6 @@
+server:
+  port: 9080
+
+numberGenerator:
+  rest:
+    endpoint: "http://localhost:8080/random"
