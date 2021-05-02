@@ -135,5 +135,3 @@ kubectl scale deployment numbergenerator-platform --replicas 10
 kubectl exec --stdin --tty numbergenerator-viewer -- apk add --no-cache bash
 kubectl exec --stdin --tty numbergenerator-viewer -- /bin/bash
 ```
-
-kubectl rollout restart deployment numbergenerator
