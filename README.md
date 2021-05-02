@@ -1,23 +1,25 @@
-# Prerequisites
+# Numbers generator demo
+
+## Prerequisites
 - kubectl, helm clients installed (also gcloud client to use GCP).
 - K8s cluster installed and available.
   (For the purpose of the demo, one will be available at [https://console.cloud.google.com/kubernetes/list]())
 - Login to the cluster.  
   ```gcloud container clusters get-credentials cluster-1 --zone europe-central2-a --project single-being-312008```
 
-# Create the namespace
+## Create the namespace
 Create the namespace that will host application structures:
 ```
 kubectl create namespace numbergenerator
 ```
 
-# Set default namespace
+## Set default namespace
 In order to facilitate the operations (i.e. not having to specify `-n` flag at every step), set the default context used by `kubectl`:
 ```
 kubectl config set-context --current --namespace=numbergenerator
 ```
 
-# Explore the application (v1) source code
+## Explore the application (v1) source code
 - `numbergenerator-backend` is a Maven multi-module project.
 - `numbergenerator-backend/numbergenerator-lib` is a "legacy" lib integrated in the new refactorization.
 - `numbergenerator-backend/numbergenerator-platform` is a distributable backend for the core business logic;
@@ -29,7 +31,7 @@ kubectl config set-context --current --namespace=numbergenerator
   - html template and fragments
   - static resources (i.e. javascript, images)
 
-# Build the application locally
+## Build the application locally
 To test and run the application locally:
 ```
 cd $PROJ_DIR/v1/numbergenerator-backend
@@ -46,7 +48,7 @@ cd $PROJ_DIR/v1/numbergenerator-viewer
 
 To test resilience, backend can be killed too.
 
-# Images building and local test (optional for the demo - already pushed)
+## Images building and local test (optional for the demo - already pushed)
 To build and push the images with Docker:
 ```
 cd $PROJ_DIR/v1/numbergenerator-backend
@@ -64,7 +66,7 @@ docker run -d -p 8080:8080 --rm --name numbergenerator-platform ccangemi/numberg
 docker run -d -p 9080:9080 --rm -e NG_REST_ENDPOINT="http://numbergenerator-platform:8080/random" --name numbergenerator-viewer --link numbergenerator-platform ccangemi/numbergenerator-viewer:v1
 ```
 
-# Deployment
+## Deployment
 ```
 cd $PROJ_DIR/v1/structures
 kubectl apply -f numbergenerator-platform-dep.yaml
@@ -75,13 +77,13 @@ kubectl apply -f numbergenerator-viewer-service.yaml
 
 ```
 
-# Evolve the application: V2
+## Evolve the application: V2
 
 - Backend will elaborate numbers and put them in a Kafka Topic.
 - `numbergenerator-viewer` will consume data from the same topic.
 - Frontend, through a persistent websocket connection, will receive push events when a new number arrives and refresh.
 
-# Build new image: V2 (optional for the demo - already pushed)
+## Build new image: V2 (optional for the demo - already pushed)
 ```
 cd $PROJ_DIR/v2/numbergenerator-backend
 docker build . -t ccangemi/numbergenerator-platform:v2
@@ -92,7 +94,7 @@ docker build . -t ccangemi/numbergenerator-viewer:v2
 docker push ccangemi/numbergenerator-viewer:v2
 ```
 
-# Install Kafka Operator (Strimzi), Kafka cluster instance and topic
+## Install Kafka Operator (Strimzi), Kafka cluster instance and topic
 Install the Kafka operator through Helm chart.
 It will allow the creation of the new CustomResources: `Kafka` and `KafkaTopic`.
 
@@ -115,7 +117,7 @@ kubectl apply -f kafka-cluster.yaml
 kubectl apply -f topics.yaml
 ```
 
-# Update application structures to V2
+## Update application structures to V2
 ```
 kubectl apply -f numbergenerator-platform-dep.yaml
 kubectl apply -f numbergenerator-viewer-cm.yaml
@@ -124,13 +126,13 @@ kubectl apply -f numbergenerator-viewer-dep.yaml
 
 Preview the app at the numbergenerator-viewer service endpoint
 
-# Scale-up and down the app
+## Scale-up and down the app
 ```
 kubectl scale deployment numbergenerator-platform --replicas 10
 ```
 
-# Troubleshooting
-## Debug with shell
+## Troubleshooting
+### Debug with shell
 ```
 kubectl exec --stdin --tty numbergenerator-viewer -- apk add --no-cache bash
 kubectl exec --stdin --tty numbergenerator-viewer -- /bin/bash
