@@ -12,17 +12,17 @@ kubectl create namespace numbergenerator
 ```
 
 # Set default namespace
-In order to facilitate the operations (i.e. not having to specify -n flag at every step), set the default context used by kubectl:
+In order to facilitate the operations (i.e. not having to specify `-n` flag at every step), set the default context used by `kubectl`:
 ```
 kubectl config set-context --current --namespace=numbergenerator
 ```
 
 # Explore the application (v1) source code
-- numbergenerator-backend is a maven multi-module project.
-- numbergenerator-backend/numbergenerator-lib is a "legacy" lib integrated in the new refactorization.
-- numbergenerator-backend/numbergenerator-platform is a distributable backend for the core business logic;
+- `numbergenerator-backend` is a Maven multi-module project.
+- `numbergenerator-backend/numbergenerator-lib` is a "legacy" lib integrated in the new refactorization.
+- `numbergenerator-backend/numbergenerator-platform` is a distributable backend for the core business logic;
   it contains a simple REST web service through which you can invoke the core business lib.
-- numbergenerator-viewer is a frontend application to invoke the backend service and visualize the results;
+- `numbergenerator-viewer` is a frontend application to invoke the backend service and visualize the results;
   it contains:
   - an MVC controller for preparing the data model to be visualized by the frontend
   - a service with a REST client template to invoke the backend service, and a fallback mechanism; a local cache of generate numbers
@@ -44,7 +44,7 @@ cd $PROJ_DIR/v1/numbergenerator-viewer
 # http://localhost:9080/ to test
 ```
 
-To test resilience backend can be killed too.
+To test resilience, backend can be killed too.
 
 # Images building and local test
 To build and push the images with Docker:
@@ -66,20 +66,74 @@ docker run -d -p 9080:9080 --rm -e NG_REST_ENDPOINT="http://numbergenerator-plat
 
 # Deployment
 ```
-kubectl rollout restart deployment numbergenerator
+cd $PROJ_DIR/v1/structures
+kubectl apply -f numbergenerator-platform-dep.yaml
+kubectl apply -f numbergenerator-platform-service.yaml
+kubectl apply -f numbergenerator-viewer-cm.yaml
+kubectl apply -f numbergenerator-viewer-dep.yaml
+kubectl apply -f numbergenerator-viewer-service.yaml
+
 ```
 
-# Debug with shell
+# Evolve the application: V2
+
+- Backend will elaborate numbers and put them in a Kafka Topic.
+- `numbergenerator-viewer` will consume data from the same topic.
+- Frontend, through a persistent websocket connection, will receive push events when a new number arrives and refresh.
+
+# Build new image: V2 (optional)
 ```
-kubectl exec --stdin --tty numbergenerator-viewer -- apk add --no-cache bash
-kubectl exec --stdin --tty shell-demo -- /bin/bash
+cd $PROJ_DIR/v2/numbergenerator-backend
+docker build . -t ccangemi/numbergenerator-platform:v2
+docker push ccangemi/numbergenerator-platform:v2
+
+cd $PROJ_DIR/v2/numbergenerator-viewer
+docker build . -t ccangemi/numbergenerator-viewer:v2
+docker push ccangemi/numbergenerator-viewer:v2
 ```
 
-kubectl create namespace kafka-operator
+# Install Kafka Operator (Strimzi), Kafka cluster instance and topic
+Install the Kafka operator through Helm chart.
+It will allow the creation of the new CustomResources: `Kafka` and `KafkaTopic`.
 
-# Strimzi Operator install
 ```
+#Add Helm chart museum
 helm repo add strimzi https://strimzi.io/charts/
 
+#Create kafka operator namespace
+kubectl create namespace kafka-operator
+
+#Install kafka operator charts
 helm install kafka-operator strimzi/strimzi-kafka-operator --set watchNamespaces="{numbergenerator}" -n kafka-operator
+
+cd $PROJ_DIR/v2/structures
+
+#Create kafka cluster instance
+kubectl apply -f kafka-cluster.yaml
+
+#Create topic
+kubectl apply -f topics.yaml
 ```
+
+# Update application structures to V2
+```
+kubectl apply -f numbergenerator-platform-dep.yaml
+kubectl apply -f numbergenerator-viewer-cm.yaml
+kubectl apply -f numbergenerator-viewer-dep.yaml
+```
+
+Preview the app at the numbergenerator-viewer service endpoint
+
+# Scale-up and down the app
+```
+kubectl scale deployment numbergenerator-platform --replicas 10
+```
+
+# Troubleshooting
+## Debug with shell
+```
+kubectl exec --stdin --tty numbergenerator-viewer -- apk add --no-cache bash
+kubectl exec --stdin --tty numbergenerator-viewer -- /bin/bash
+```
+
+kubectl rollout restart deployment numbergenerator
