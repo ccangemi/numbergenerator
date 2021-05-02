@@ -2,7 +2,7 @@
 - kubectl, helm clients installed (also gcloud client to use GCP).
 - K8s cluster installed and available.
   (For the purpose of the demo, one will be available at [https://console.cloud.google.com/kubernetes/list]())
-- Login to the cluster.
+- Login to the cluster.  
   ```gcloud container clusters get-credentials cluster-1 --zone europe-central2-a --project single-being-312008```
 
 # Create the namespace
@@ -46,7 +46,7 @@ cd $PROJ_DIR/v1/numbergenerator-viewer
 
 To test resilience, backend can be killed too.
 
-# Images building and local test
+# Images building and local test (optional for the demo - already pushed)
 To build and push the images with Docker:
 ```
 cd $PROJ_DIR/v1/numbergenerator-backend
@@ -81,7 +81,7 @@ kubectl apply -f numbergenerator-viewer-service.yaml
 - `numbergenerator-viewer` will consume data from the same topic.
 - Frontend, through a persistent websocket connection, will receive push events when a new number arrives and refresh.
 
-# Build new image: V2 (optional)
+# Build new image: V2 (optional for the demo - already pushed)
 ```
 cd $PROJ_DIR/v2/numbergenerator-backend
 docker build . -t ccangemi/numbergenerator-platform:v2
