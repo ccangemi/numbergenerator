@@ -30,6 +30,8 @@ var layout = {
   yaxis: {title: "Count"}
 };
 
+updateNumbers();
+data[0].x = numbers;
 Plotly.newPlot('myDiv', data, layout, {staticPlot: true, responsive: false});
 
 function localRefresh() {

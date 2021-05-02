@@ -22,7 +22,7 @@ spec:
         app: numbergenerator-viewer
     spec:
       containers:
-      - image: docker.io/ccangemi/numbergenerator-viewer:v1
+      - image: docker.io/ccangemi/numbergenerator-viewer:v2
         imagePullPolicy: Always
         name: numbergenerator-viewer
         resources: {}

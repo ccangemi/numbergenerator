@@ -22,7 +22,7 @@ spec:
         app: numbergenerator-platform
     spec:
       containers:
-      - image: docker.io/ccangemi/numbergenerator-platform:v1
+      - image: docker.io/ccangemi/numbergenerator-platform:v2
         imagePullPolicy: Always
         name: numbergenerator-platform
         resources: {}

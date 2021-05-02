@@ -15,12 +15,13 @@ public class NumberGeneratorViewerController {
 	
 	@GetMapping("/")
 	public String view(Model model) {
+		model.addAttribute("numbers", numberGeneratorViewerService.getNumbers());
 		return "index";
 	}
 
 	@GetMapping("/numbers")
 	public String moreNumbers(Model model) {
-		model.addAttribute("numbers", numberGeneratorViewerService.getNumbers());
+		model.addAttribute("numbers", numberGeneratorViewerService.generateAndGetNumbers());
 		return "fragments :: #data";
 	}
 }

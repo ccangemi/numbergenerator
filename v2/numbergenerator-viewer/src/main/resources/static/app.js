@@ -49,8 +49,9 @@ function showNumbers(message) {
 
 }
 
+updateNumbers();
+data[0].x = numbers;
 Plotly.newPlot('myDiv', data, layout, {staticPlot: true, responsive: false});
-
 connect();
 
 function localRefresh() {
@@ -58,6 +59,5 @@ function localRefresh() {
     updateNumbers();
     data[0].x = numbers;
     Plotly.react('myDiv', data, layout, {staticPlot: true, responsive: false});
-    
 }
 )}

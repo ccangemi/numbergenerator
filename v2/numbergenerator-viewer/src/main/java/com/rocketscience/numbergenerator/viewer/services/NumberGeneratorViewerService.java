@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -28,18 +30,19 @@ public class NumberGeneratorViewerService {
 	@Autowired
     private SimpMessagingTemplate template;
 
+	@Getter
 	private List<Long> numbers = new ArrayList<>();
 
 	private long counter = 1;
 	
 	@Recover
-	public List<Long> getNumbersFallback(RuntimeException re) {
+	public List<Long> generateAndGetNumbersFallback(RuntimeException re) {
 		numbers.add(counter <= 100 ? counter++ : 1);
 		return numbers;
 	}
 	
-	@Retryable(recover = "getNumbersFallback", value = java.net.ConnectException.class, maxAttempts = 1)
-	public List<Long> getNumbers() {
+	@Retryable(recover = "generateAndGetNumbersFallback", value = java.net.ConnectException.class, maxAttempts = 1)
+	public List<Long> generateAndGetNumbers() {
 		long result = restTemplate.getForObject(numberGeneratorEndpoint, Long.class);
 		
 		numbers.add(result);

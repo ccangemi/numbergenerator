@@ -25,14 +25,15 @@
         <p style="color: #30546d; margin-right: -780px;">by RocketScience© Inc.</p>
     </div>
 
-    <!--div class="container"-->
-        <div id="myDiv" >
-        </div>
-        <script src="/app.js"></script>
-        <div class="text-center">
-            <button onClick="localRefresh()" >Calculate</button>
-        </div>
-    <!--/div-->
-    <div id="anchor"></div>
+    <div id="anchor" th:insert="fragments.html :: #data"></div>
+
+    <div id="myDiv" >
+    </div>
+
+    <script src="/app.js"></script>
+    
+    <div class="text-center">
+        <button onClick="localRefresh()" >Calculate</button>
+    </div>
 </body>
 </html>

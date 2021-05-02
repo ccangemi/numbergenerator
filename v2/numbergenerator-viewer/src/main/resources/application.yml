@@ -3,7 +3,7 @@ server:
 
 numberGenerator:
   rest:
-    endpoint: "http://localhost:8080/random"
+    endpoint: ${NG_REST_ENDPOINT:http://localhost:8080/random}
 
 spring:
    kafka:
