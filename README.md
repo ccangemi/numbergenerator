@@ -24,7 +24,7 @@ kubectl config set-context --current --namespace=numbergenerator
 - `numbergenerator-backend/numbergenerator-lib` is a "legacy" lib integrated in the refactoring.
 - `numbergenerator-backend/numbergenerator-platform` is a backend orchestrator of the core business logic;
   it contains a simple REST web service through which you can invoke the core business lib.
-- `numbergenerator-viewer` is a frontend application to invoke the backend service and visualize the results;
+- `numbergenerator-viewer` is a frontend façade that adapts and ivokes the backend service to visualize the results;
   it contains:
   - an MVC controller for preparing the data model to be visualized by the frontend
   - a service with a REST client template to invoke the backend service, and a fallback mechanism; a local cache of generate numbers
