@@ -2,9 +2,9 @@
 
 ## Prerequisites
 - kubectl, helm clients installed (also gcloud client to use GCP).
-- K8s cluster installed and available.  
-  (For the purpose of the demo, one will be available at https://console.cloud.google.com/kubernetes/list)
+- K8s cluster installed and available.
 - Login to the cluster.  
+  E.g.:  
   ```gcloud container clusters get-credentials cluster-1 --zone europe-central2-a --project single-being-312008```
 
 ## Create the namespace
