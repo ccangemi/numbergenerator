@@ -22,7 +22,7 @@ kubectl config set-context --current --namespace=numbergenerator
 ## Explore the application (v1) source code
 - `numbergenerator-backend` is a Maven multi-module project.
 - `numbergenerator-backend/numbergenerator-lib` is a "legacy" lib integrated in the refactoring.
-- `numbergenerator-backend/numbergenerator-platform` is a distributable backend for the core business logic;
+- `numbergenerator-backend/numbergenerator-platform` is a backend orchestrator of the core business logic;
   it contains a simple REST web service through which you can invoke the core business lib.
 - `numbergenerator-viewer` is a frontend application to invoke the backend service and visualize the results;
   it contains:
