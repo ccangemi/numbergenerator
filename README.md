@@ -78,6 +78,24 @@ In order to facilitate the operations (i.e. not having to specify `-n` flag at e
 kubectl config set-context --current --namespace=numbergenerator
 ```
 
+## Deployment
+```
+cd $PROJ_DIR/structures
+kubectl apply -f numbergenerator-platform-cm.yaml
+kubectl apply -f numbergenerator-platform-dep.yaml
+kubectl apply -f numbergenerator-platform-service.yaml
+kubectl apply -f numbergenerator-viewer-cm.yaml
+kubectl apply -f numbergenerator-viewer-dep.yaml
+kubectl apply -f numbergenerator-viewer-service.yaml
+```
+
+# Test the app with rest
+Get the service endpoint:
+```
+kubectl get service numbergenerator-viewer-service
+```
+Test the app.
+
 ## Install Kafka Operator (Strimzi), Kafka cluster instance and topic
 Install the Kafka operator through Helm chart.
 It will allow the creation of the new CustomResources: `Kafka` and `KafkaTopic`.
@@ -101,24 +119,6 @@ kubectl apply -f kafka-cluster.yaml
 kubectl apply -f topics.yaml
 ```
 
-## Deployment
-```
-cd $PROJ_DIR/structures
-kubectl apply -f numbergenerator-platform-cm.yaml
-kubectl apply -f numbergenerator-platform-dep.yaml
-kubectl apply -f numbergenerator-platform-service.yaml
-kubectl apply -f numbergenerator-viewer-cm.yaml
-kubectl apply -f numbergenerator-viewer-dep.yaml
-kubectl apply -f numbergenerator-viewer-service.yaml
-```
-
-# Test the app with rest
-Get the service endpoint:
-```
-kubectl get service numbergenerator-viewer-service
-```
-Test the app.
-
 # Enable Kafka
 ```
 cd $PROJ_DIR/structures
@@ -131,7 +131,7 @@ kubectl rollout restart deployment numbergenerator-viewer
 
 ## Scale-up and down the app
 ```
-kubectl scale deployment numbergenerator-platform --replicas 10
+kubectl scale deployment numbergenerator-platform --replicas 20
 ```
 
 ## Troubleshooting
