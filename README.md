@@ -80,10 +80,10 @@ It will allow the creation of the new CustomResources: `Kafka` and `KafkaTopic`.
 #Add Helm chart museum (already applied)
 helm repo add strimzi https://strimzi.io/charts/
 
-#Create kafka operator namespace (already applied)
+#Create kafka operator namespace
 kubectl create namespace kafka-operator
 
-#Install kafka operator charts (already applied)
+#Install kafka operator charts
 helm install kafka-operator strimzi/strimzi-kafka-operator --set watchNamespaces="{numbergenerator}" -n kafka-operator
 
 cd $PROJ_DIR/structures
