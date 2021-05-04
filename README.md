@@ -55,6 +55,10 @@ docker run -d -p 8080:8080 --rm --name numbergenerator-platform ccangemi/numberg
 docker run -d -p 9080:9080 --rm -e NG_REST_ENDPOINT="http://numbergenerator-platform:8080/random" --name numbergenerator-viewer --link numbergenerator-platform ccangemi/numbergenerator-viewer:v2
 ```
 
+**To test resilience, backend can be killed too.**
+
+## Time to go on the cloud
+
 ## Create the namespace
 Create the namespace that will host application structures:
 ```
@@ -81,7 +85,7 @@ kubectl create namespace kafka-operator
 #Install kafka operator charts
 helm install kafka-operator strimzi/strimzi-kafka-operator --set watchNamespaces="{numbergenerator}" -n kafka-operator
 
-cd $PROJ_DIR/v2/structures
+cd $PROJ_DIR/structures
 
 #Create kafka cluster instance
 kubectl apply -f kafka-cluster.yaml
