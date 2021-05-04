@@ -5,7 +5,7 @@
 - K8s cluster installed and available.
 - Login to the cluster.  
   E.g.:  
-  ```gcloud container clusters get-credentials cluster-1 --zone europe-central2-a --project single-being-312008```
+  ```gcloud container clusters get-credentials cluster-1 --zone europe-central2-c --project rocketscience-312714```
 
 ## Explore the application source code
 - `numbergenerator-backend` is a Maven multi-module project.
@@ -55,9 +55,8 @@ docker run -d -p 8080:8080 --rm --name numbergenerator-platform ccangemi/numberg
 docker run -d -p 9080:9080 --rm -e NG_REST_ENDPOINT="http://numbergenerator-platform:8080/random" --name numbergenerator-viewer --link numbergenerator-platform ccangemi/numbergenerator-viewer:v2
 ```
 
-**To test resilience, backend can be killed too.**
-
 ## Time to go on the cloud
+Make sure you're connected to the cluster.
 
 ## Create the namespace
 Create the namespace that will host application structures:
@@ -76,13 +75,13 @@ Install the Kafka operator through Helm chart.
 It will allow the creation of the new CustomResources: `Kafka` and `KafkaTopic`.
 
 ```
-#Add Helm chart museum
+#Add Helm chart museum (already applied)
 helm repo add strimzi https://strimzi.io/charts/
 
-#Create kafka operator namespace
+#Create kafka operator namespace (already applied)
 kubectl create namespace kafka-operator
 
-#Install kafka operator charts
+#Install kafka operator charts (already applied)
 helm install kafka-operator strimzi/strimzi-kafka-operator --set watchNamespaces="{numbergenerator}" -n kafka-operator
 
 cd $PROJ_DIR/structures
@@ -97,12 +96,26 @@ kubectl apply -f topics.yaml
 ## Deployment
 ```
 cd $PROJ_DIR/structures
+kubectl apply -f numbergenerator-platform-cm.yaml
 kubectl apply -f numbergenerator-platform-dep.yaml
 kubectl apply -f numbergenerator-platform-service.yaml
 kubectl apply -f numbergenerator-viewer-cm.yaml
 kubectl apply -f numbergenerator-viewer-dep.yaml
 kubectl apply -f numbergenerator-viewer-service.yaml
+```
 
+# Test the app with rest
+Get the service endpoint:
+```
+kubectl get service numbergenerator-viewer-service
+```
+
+# Enable Kafka
+```
+kubectl apply -f numbergenerator-platform-cm-kafka.yaml
+kubectl apply -f numbergenerator-viewer-cm-kafka.yaml
+kubectl rollout restart deployment numbergenerator-platform
+kubectl rollout restart deployment numbergenerator-viewer
 ```
 
 ## Scale-up and down the app

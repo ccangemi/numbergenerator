@@ -29,3 +29,10 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+      volumes:
+      - name: numbergenerator-platform-cm
+        configMap:
+          name: numbergenerator-platform-cm 
+          items:
+          - key: application.yml 
+            path: application.yml
