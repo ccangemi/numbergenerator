@@ -23,6 +23,7 @@
 ## Build the application locally
 To test and run the application locally:
 ```
+export PROJ_DIR=`pwd`
 cd $PROJ_DIR/numbergenerator-backend
 #build all the dependencies and install them locally
 ./mvnw clean install 
@@ -34,8 +35,6 @@ cd $PROJ_DIR/numbergenerator-viewer
 ./mvnw clean package spring-boot:run &
 # http://localhost:9080/ to test
 ```
-
-To test resilience, backend can be killed too.
 
 ## Images building and local test (optional for the demo - already pushed)
 To build and push the images with Docker:
@@ -52,7 +51,10 @@ docker push ccangemi/numbergenerator-viewer:v2
 To test:
 ```
 docker run -d -p 8080:8080 --rm --name numbergenerator-platform ccangemi/numbergenerator-platform:v2
+# http://localhost:8080/random to test
+
 docker run -d -p 9080:9080 --rm -e NG_REST_ENDPOINT="http://numbergenerator-platform:8080/random" --name numbergenerator-viewer --link numbergenerator-platform ccangemi/numbergenerator-viewer:v2
+# http://localhost:9080/ to test
 ```
 
 ## Time to go on the cloud
@@ -109,6 +111,8 @@ Get the service endpoint:
 ```
 kubectl get service numbergenerator-viewer-service
 ```
+Test the app.  
+**Leave the page open**
 
 # Enable Kafka
 ```
