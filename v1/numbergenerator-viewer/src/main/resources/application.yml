@@ -1,6 +1,0 @@
-server:
-  port: 9080
-
-numberGenerator:
-  rest:
-    endpoint: ${NG_REST_ENDPOINT:http://localhost:8080/random}
