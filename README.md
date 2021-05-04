@@ -24,15 +24,21 @@
 To test and run the application locally:
 ```
 export PROJ_DIR=`pwd`
+
 cd $PROJ_DIR/numbergenerator-backend
+
 #build all the dependencies and install them locally
 ./mvnw clean install 
+
 #run the backend
 ./mvnw -f numbergenerator-platform/pom.xml spring-boot:run & 
+
 # http://localhost:8080/random to test
 
 cd $PROJ_DIR/numbergenerator-viewer
+
 ./mvnw clean package spring-boot:run &
+
 # http://localhost:9080/ to test
 ```
 
@@ -118,6 +124,7 @@ Test the app.
 cd $PROJ_DIR/structures
 kubectl apply -f numbergenerator-platform-cm-kafka.yaml
 kubectl apply -f numbergenerator-viewer-cm-kafka.yaml
+
 kubectl rollout restart deployment numbergenerator-platform
 kubectl rollout restart deployment numbergenerator-viewer
 ```
