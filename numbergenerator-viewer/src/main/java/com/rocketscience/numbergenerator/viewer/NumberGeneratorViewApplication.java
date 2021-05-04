@@ -1,5 +1,7 @@
 package com.rocketscience.numbergenerator.viewer;
 
+import java.time.Duration;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,7 +15,10 @@ public class NumberGeneratorViewApplication {
 	
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
+		return builder
+			.setConnectTimeout(Duration.ofSeconds(500))
+			.setReadTimeout(Duration.ofSeconds(500))
+			.build();
 	}
 	
 	public static void main(String[] args) {
