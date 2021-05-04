@@ -1,4 +1,4 @@
-# Numbers generator demo
+# RocketScience Inc. - Numbers generator demo
 
 ## Prerequisites
 - kubectl, helm clients installed (also gcloud client to use GCP).
