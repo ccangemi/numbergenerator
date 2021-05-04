@@ -111,8 +111,7 @@ Get the service endpoint:
 ```
 kubectl get service numbergenerator-viewer-service
 ```
-Test the app.  
-**Leave the page open**
+Test the app.
 
 # Enable Kafka
 ```
