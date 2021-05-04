@@ -15,7 +15,7 @@ public class NumberGeneratorProducer {
 	@Autowired
 	private NumberGenerator numberGenerator;
 	
-	@Autowired
+	@Autowired(required=false)
 	KafkaTemplate<Object, Long> template;
 	
 	@Scheduled(fixedDelay = 1000)

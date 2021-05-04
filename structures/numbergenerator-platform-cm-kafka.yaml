@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: numbergenerator-viewer-cm
+  name: numbergenerator-platform-cm
   namespace: numbergenerator
   labels:
     app: numbergenerator

@@ -112,6 +112,7 @@ kubectl get service numbergenerator-viewer-service
 
 # Enable Kafka
 ```
+cd $PROJ_DIR/structures
 kubectl apply -f numbergenerator-platform-cm-kafka.yaml
 kubectl apply -f numbergenerator-viewer-cm-kafka.yaml
 kubectl rollout restart deployment numbergenerator-platform

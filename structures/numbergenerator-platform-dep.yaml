@@ -26,6 +26,11 @@ spec:
         imagePullPolicy: Always
         name: numbergenerator-platform
         resources: {}
+        volumeMounts:
+          - name: numbergenerator-platform-cm 
+            mountPath: "/app/application.yml"
+            subPath: application.yml
+            readOnly: true
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
